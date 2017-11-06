@@ -1,0 +1,2587 @@
+<html>
+<body>
+  <h3>package scripts;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+@RunWith(Suite.class)
+@SuiteClasses({ annajunit.class, ConvertUnitJU.class, directionmapsjunit.class,
+flipjunit.class, manipalJunit.class, mapsjunit.class })
+public class AllTests {
+}
+package scripts;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class amazonsavetoexcelNG {
+private WebDriver driver;
+@Test
+ public void f() throws InterruptedException {
+driver.manage().timeouts().pageLoadTimeout(90, TimeUnit.SECONDS);
+ driver.manage().window().maximize();
+
+ driver.get("https://www.amazon.in/");
+ Actions action = new Actions(driver);
+ WebElement e =
+driver.findElement(By.xpath("html/body/div[1]/header/div/div[2]/div[3]/div[1]/a"));
+ action.moveToElement(e).build().perform();
+ Thread.sleep(3000);
+ WebElement mnc =
+driver.findElement(By.xpath("html/body/div[1]/header/div/div[1]/div[4]/div[4]/div[2]/span[5]/span"
+));
+ action.moveToElement(mnc).build().perform();
+ Thread.sleep(3000);
+ WebElement elec =
+driver.findElement(By.xpath("html/body/div[1]/header/div/div[1]/div[4]/div[4]/div[3]/div[5]/div[2]/
+div/a[7]/span"));
+ action.moveToElement(elec).click().build().perform();
+ Thread.sleep(3000);
+ /* WebElement l = driver.findElement(By.linkText("AmazonBasics Mini Bluetooth Speaker -
+Black"));
+ System.out.println(l.getTagName());
+ */// html/body/div[2]/div[5]/div/div[6]/div/div/div/div[2]/div[6]/div[1]/div[3]/div[1]/a[1]
+ // html/body/div[2]/div[5]/div/div[6]/div/div/div/div[2]/div[6]/div[1]/div[3]/div[4]/span[2]
+
+ JavascriptExecutor jse = (JavascriptExecutor)driver;
+jse.executeScript("window.scrollBy(0,2750)", "");
+ String a =
+driver.findElement(By.xpath("//*[@id=\"waterfall_353892\"]/div/div[2]/div[27]/div[1]/div[3]/div[4]/
+span[2]")).getText();
+ String b = a.substring(1);
+ System.out.println(b);
+
+}
+
+@BeforeTest
+ public void beforeTest() {
+System.setProperty("webdriver.chrome.driver",
+"test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+ @AfterTest
+ public void afterTest() {
+ }
+ public void writeexcel(String num) throws IOException
+ {
+ Workbook wb = new XSSFWorkbook();
+ CreationHelper createHelper = wb.getCreationHelper();
+ Sheet sheet = wb.createSheet("Sheet1");
+ Row row = sheet.createRow(1);
+ Cell cell = row.createCell(1);
+ cell.setCellValue(createHelper.createRichTextString(num));
+
+ FileOutputStream fos = new FileOutputStream("data/Exportexcel.xlsx");
+ wb.write(fos);
+ fos.close();
+ }
+}
+package scripts;
+import java.util.concurrent.TimeUnit;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.AssertJUnit;
+public class annajunit {
+private WebDriver driver;
+@Before
+public void setUp() throws Exception {
+System.setProperty("webdriver.ie.driver",
+"test\\resources\\drivers\\IEDriverServer.exe");
+driver = new InternetExplorerDriver();
+}
+@After
+public void tearDown() throws Exception {
+driver.quit();
+}
+@Test
+public void test() {
+driver.get("https://www.annauniv.edu");
+driver.findElement(By.xpath("/html/body/table/tbody/tr[1]/td[1]/table/tbody/tr/td[1]/table
+/tbody/tr/td/table/tbody/tr/td[5]/div/a")).click();
+Actions action = new Actions(driver);
+WebElement we = driver.findElement(By.xpath("//*[@id=\"link3\"]/strong"));
+action.moveToElement(we).moveToElement(driver.findElement(By.xpath("//*[@id=\"link3\
+"]/strong"))).build().perform();
+WebElement ae = driver.findElement(By.xpath(".//*[@id='menuItemHilite33']"));
+action.moveToElement(ae).moveToElement(driver.findElement(By.xpath(".//*[@id='menuIt
+emHilite33']"))).click().build().perform();
+String a = "Institute For Ocean Management - Anna University offers M.Tech in
+Coastal Management. ENVIS Center for Coastal Zone Management and Coastal Shelterbelts";
+AssertJUnit.assertEquals(a , driver.getTitle());
+WebElement ri = driver.findElement(By.id("link3"));
+WebElement cpm = driver.findElement(By.id("menuItemHilite13"));
+action.moveToElement(ri).moveToElement(driver.findElement(By.id("link3"))).build().perfor
+m();
+action.moveToElement(cpm).moveToElement(driver.findElement(By.id("menuItemHilite13")
+)).build().perform();
+driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+action.moveToElement(cpm).moveToElement(driver.findElement(By.id("menuItemHilite13")
+)).click().build().perform();
+String b = ":: IOM - Institute For Ocean Management - Anna University ::";
+AssertJUnit.assertEquals(b, driver.getTitle());
+}
+}
+package scripts;
+import java.util.regex.Pattern;
+import java.util.concurrent.TimeUnit;
+import org.testng.annotations.*;
+import static org.testng.Assert.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+public class annaunivIDEcopyNG {
+ private WebDriver driver;
+ private String baseUrl;
+ private boolean acceptNextAlert = true;
+ private StringBuffer verificationErrors = new StringBuffer();
+ @BeforeClass(alwaysRun = true)
+ public void setUp() throws Exception {
+ driver = new FirefoxDriver();
+ baseUrl = "https://www.annauniv.edu/";
+ driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+ }
+ @Test
+ public void testAnnauniv22() throws Exception {
+ driver.get(baseUrl + "/");
+ driver.findElement(By.linkText("Departments")).click();
+ // ERROR: Caught exception [ERROR: Unsupported command [mouseOver | css=#link3 > strong |
+]]
+ // ERROR: Caught exception [ERROR: Unsupported command [mouseOver | id=menuItemHilite33
+| ]]
+ driver.findElement(By.id("menuItemHilite33")).click();
+ // ERROR: Caught exception [ERROR: Unsupported command [mouseOver | id=link3 | ]]
+ // ERROR: Caught exception [ERROR: Unsupported command [mouseOver | id=menuItemHilite13
+| ]]
+ assertEquals(driver.getTitle(), ":: IOM - Institute For Ocean Management - Anna University ::");
+ driver.findElement(By.id("menuItemHilite13")).click();
+ assertEquals(driver.getTitle(), ":: IOM - Institute For Ocean Management - Anna University ::");
+ // ERROR: Caught exception [unknown command []]
+ }
+ @AfterClass(alwaysRun = true)
+ public void tearDown() throws Exception {
+ driver.quit();
+ String verificationErrorString = verificationErrors.toString();
+ if (!"".equals(verificationErrorString)) {
+ fail(verificationErrorString);
+ }
+ }
+ private boolean isElementPresent(By by) {
+ try {
+ driver.findElement(by);
+ return true;
+ } catch (NoSuchElementException e) {
+ return false;
+ }
+ }
+ private boolean isAlertPresent() {
+ try {
+ driver.switchTo().alert();
+ return true;
+ } catch (NoAlertPresentException e) {
+ return false;
+ }
+ }
+ private String closeAlertAndGetItsText() {
+ try {
+ Alert alert = driver.switchTo().alert();
+ String alertText = alert.getText();
+ if (acceptNextAlert) {
+ alert.accept();
+ } else {
+ alert.dismiss();
+ }
+ return alertText;
+ } finally {
+ acceptNextAlert = true;
+ }
+ }
+}
+package scripts;
+import java.io.File;
+import java.util.concurrent.TimeUnit;
+import jxl.*;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class barnesandnobleDTDNG {
+private WebDriver driver;
+@DataProvider (name = "DP1")
+public Object[][] createData1() {
+Object[][] retObjArr=getTableArray("D:\\book_data1.xls","DataPool",
+"bookTestData1");
+return(retObjArr);
+}
+@Test (dataProvider = "DP1")
+public void testDataProviderExample(String bookTitle,
+String authorName, String isbnNumber) throws Exception {
+driver.get("https://www.barnesandnoble.com");
+driver.manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
+driver.findElement(By.id("searchBarBN")).sendKeys(bookTitle);
+driver.findElement(By.id("searchBarBN")).sendKeys(Keys.ENTER);
+Thread.sleep(5000);
+/*for(int i=0;i<5;i++)
+{
+List<WebElement> author ;
+}*/
+//String authorcomp =
+driver.findElement(By.xpath("html/body/main/div[2]/div[1]/div/div[2]/div/div/section[2]/div/div[1]/
+div[2]/div[2]/a")).getText();
+for(int i=1;i<=5;i++)
+{
+if(authorName.equalsIgnoreCase(driver.findElement(By.xpath("html/body/main/div[2]/div[1
+]/div/div[2]/div/div/section[2]/div/div["+i+"]/div[2]/div[2]/a")).getText()))
+{
+driver.findElement(By.xpath("html/body/main/div[2]/div[1]/div/div[2]/div/div/section[2]/di
+v/div["+i+"]/div[2]/div[1]/a")).click();
+break;
+}
+else
+{
+continue;
+}
+}
+/*if(authorName.equalsIgnoreCase(authorcomp))
+{
+driver.
+}*/
+Thread.sleep(10000);
+System.out.println(driver.findElement(By.xpath("html/body/main/div[2]/div[1]/section/div[
+1]/header/div/h1")).getText());
+System.out.println(driver.findElement(By.xpath("html/body/main/div[2]/div[1]/section/div[
+1]/header/div/div[2]/div/div[1]/div/span/a")).getText());
+//Assert.assertEquals(bookTitle,
+driver.findElement(By.xpath("html/body/main/div[2]/div[1]/section/div[1]/header/div/h1")).getText
+());
+//Assert.assertEquals(authorName,
+driver.findElement(By.xpath("html/body/main/div[2]/div[1]/section/div[1]/header/div/div[2]/div/di
+v[1]/div/span/a")).getText());
+/*JavascriptExecutor jse = (JavascriptExecutor)driver;
+jse.executeScript("window.scrollBy(0,2000)", "");
+driver.findElement(By.linkText("Product Details")).click();*/
+//driver.findElement(By.xpath("html/body/main/div[2]/section[3]/div/div[1]/ul/li[2]/a")).clic
+k();
+Thread.sleep(4000);
+System.out.println(driver.findElement(By.xpath("html/body/main/div[2]/section[3]/div/div[
+2]/div/div[2]/div/table/tbody[1]/tr[1]/td")).getText());
+//Assert.assertEquals(isbnNumber,
+driver.findElement(By.xpath("html/body/main/div[2]/section[3]/div/div[2]/div/div[2]/div/table/tbod
+y[1]/tr[1]/td")).getText());
+}
+@BeforeTest
+public void beforeTest() {
+System.setProperty("webdriver.gecko.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\geckodriver.exe");
+driver = new FirefoxDriver();
+}
+@AfterTest
+public void afterTest() {
+driver.quit();
+}
+public String[][] getTableArray(String xlFilePath, String sheetName, String tableName)
+{
+String[][] tabArray=null;
+try{
+Workbook workbook = Workbook.getWorkbook(new File(xlFilePath));
+Sheet sheet = workbook.getSheet(sheetName);
+int startRow,startCol, endRow, endCol,ci,cj;
+Cell tableStart=sheet.findCell(tableName);
+startRow=tableStart.getRow();
+startCol=tableStart.getColumn();
+Cell tableEnd= sheet.findCell(tableName, startCol+1,startRow+1, 100,
+64000, false);
+endRow=tableEnd.getRow();
+endCol=tableEnd.getColumn();
+System.out.println("startRow="+startRow+", endRow="+endRow+", " +
+"startCol="+startCol+", endCol="+endCol);
+tabArray=new String[endRow-startRow-1][endCol-startCol-1];
+ci=0;
+for (int i=startRow+1;i<endRow;i++,ci++){
+cj=0;
+for (int j=startCol+1;j<endCol;j++,cj++){
+tabArray[ci][cj]=sheet.getCell(j,i).getContents();
+}
+}
+}
+catch (Exception e) {
+System.out.println("error in getTableArray()");
+}
+return(tabArray);
+}
+}
+package scripts;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class ConvertUnitJU {
+private WebDriver driver;
+@BeforeMethod
+public void setUp() throws Exception {
+System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+@AfterMethod
+public void tearDown() throws Exception {
+driver.quit();
+}
+@Test
+public void test() {
+driver.get("https://www.convertunits.com/from/kilometer/to/meter");
+driver.findElement(By.xpath(".//*[@id='EchoTopic']/form[1]/table/tbody/tr[1]/td[1]/input")
+).sendKeys("3");
+driver.findElement(By.xpath(".//*[@id='EchoTopic']/form[1]/table/tbody/tr[3]/td/input")).cl
+ick();
+String a =
+driver.findElement(By.xpath(".//*[@id='EchoTopic']/form[1]/table/tbody/tr[2]/td[1]/input")).getAttr
+ibute("value");
+System.out.println(a);
+int ab = Integer.parseInt(a);
+AssertJUnit.assertEquals(3*1000, ab);
+}
+}
+package scripts;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import javax.swing.JOptionPane;
+import org.junit.*;
+import static org.junit.Assert.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class Crossword_BooksWD {
+ private WebDriver driver;
+ private StringBuffer verificationErrors = new StringBuffer();
+ String allBooksCount;
+
+ @Before
+ public void setUp() throws Exception
+ {
+
+ System.setProperty("webdriver.chrome.driver", "test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+
+// System.setProperty("webdriver.ie.driver", "test\\resources\\IEDriverServer.exe");
+// System.setProperty("webdriver.ie.driver", "test\\resources\\IEDriverServer64.exe");
+// driver = new InternetExplorerDriver();
+ //driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+ driver.manage().timeouts().pageLoadTimeout(90, TimeUnit.SECONDS);
+ driver.manage().window().maximize();
+ }
+ @Test
+ public void testTCCrossword() throws Exception
+ {
+ driver.get("https://www.crossword.in/");
+ Thread.sleep(2000);
+ driver.findElement(By.id("search-input")).clear();
+ driver.findElement(By.id("search-input")).sendKeys("Cricket");
+ driver.findElement(By.xpath("//span[3]/input")).click();
+// driver.findElement(By.linkText("High to Low")).click();
+// driver.findElement(By.partialLinkText("High to Low")).click();
+ driver.findElement(By.xpath("//a[contains(text(),'High to Low')]")).click();
+
+ Thread.sleep(5000);
+ allBooksCount = driver.findElement(By.xpath("//div[@id='searchresults']/div[2]/div/span")).getText();
+ allBooksCount = allBooksCount.substring(allBooksCount.indexOf("Showing") + 8,
+allBooksCount.indexOf(" Results"));
+
+ System.out.println("allBooksCount is:" + allBooksCount);
+
+int readyStateComplete = Integer.parseInt(allBooksCount);
+System.out.println("allBooksCount in int is:" + readyStateComplete);
+List<WebElement> allBooks = driver.findElements(By.className("variant-image"));
+int allBooksLoadedCount = allBooks.size();
+System.out.println("allBooksLoadedCount in int is:" + allBooksLoadedCount);
+while (readyStateComplete != allBooksLoadedCount) {
+System.out.println("Inside scroll while 01");
+JavascriptExecutor je = (JavascriptExecutor) driver;
+ je.executeScript("window.scrollTo(0, document.body.offsetHeight)");
+ System.out.println("Inside scroll while 02");
+ List<WebElement> allBooks2 = driver.findElements(By.className("variant-image"));
+ System.out.println("Inside scroll while allBooks count: " + allBooks2.size());
+ allBooksLoadedCount = allBooks2.size();
+}
+System.out.println("Outside scroll while 02");
+
+ //div[@id='search-results']/div[2]/div/span
+
+int i;
+int j;
+i = 1;
+j = i+1;
+while (isElementPresent(By.xpath("//li["+j+"]/div/div[2]/span[3]/span[1]/span")))
+{
+System.out.println("&&&&&& i and j : " + i + " and " + j);
+String T1;
+String T2;
+String T3;
+if (isElementPresent(By.xpath("//li["+i+"]/div/div[2]/span[3]/span[3]/span")))
+{
+T1 = driver.findElement(By.xpath("//li["+i+"]/div/div[2]/span[3]/span[3]/span")).getText();
+System.out.println("\n\n *** T1 is " + T1);
+}
+else
+{
+T1 = driver.findElement(By.xpath("//li["+i+"]/div/div[2]/span[3]/span[1]/span")).getText();
+System.out.println("\n\n *** T1 is " + T1);
+}
+if (isElementPresent(By.xpath("//li["+j+"]/div/div[2]/span[3]/span[3]/span")))
+{
+T2 = driver.findElement(By.xpath("//li["+j+"]/div/div[2]/span[3]/span[3]/span")).getText();
+System.out.println("\n\n *** T2 is " + T2);
+}
+else
+{
+T2 = driver.findElement(By.xpath("//li["+j+"]/div/div[2]/span[3]/span[1]/span")).getText();
+System.out.println("\n\n *** T2 is " + T2);
+}
+double A = Double.parseDouble(T1.trim().substring(3).replace(",", ""));
+double B = Double.parseDouble(T2.trim().substring(3).replace(",", ""));
+// if (A<=B){
+if (A>=B){
+T3 = A + " and " + B + " >>True";
+}
+else
+{
+T3 = A + " and " + B + " >>False";
+// Assert.assertTrue(A + " and " + B + " >>False", false); //Let's not assert here and continue the test
+System.out.println("For " + i + " and " + j + " Book!! Not in Desc order for book with prices: " + T1 + "
+and " + T2);
+ JOptionPane.showMessageDialog(null, "For " + i + " and " + j + " Book!! Not in Desc order for
+book with prices: " + T1 + " and " + T2);
+}
+System.out.println("\n\n\n *** Are the books sorted in Asc order? >> " + T3);
+i = i + 1;
+j = i + 1;
+}
+ }
+ @After
+ public void tearDown() throws Exception {
+ driver.quit();
+ String verificationErrorString = verificationErrors.toString();
+ if (!"".equals(verificationErrorString)) {
+ fail(verificationErrorString);
+ }
+ }
+ private boolean isElementPresent(By by) {
+ try {
+ driver.findElement(by);
+ return true;
+ } catch (NoSuchElementException e) {
+ return false;
+ }
+ }
+
+}
+package scripts;
+import org.testng.annotations.Test;
+public class dependencies {
+ @Test
+ public void f() {
+ System.out.println("1");
+ }
+ @Test
+ public void nkn() {
+ System.out.println("2");
+ }
+
+ @Test
+ public void qq() {
+ System.out.println("3");
+ }
+
+ @Test
+ public void z() {
+ System.out.println("4");
+ }
+}
+package scripts;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class directionmapsjunit {
+private WebDriver driver;
+@BeforeMethod
+public void setUp() throws Exception {
+System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+driver.get("https://www.google.com/maps");
+}
+@AfterMethod
+public void tearDown() throws Exception {
+driver.close();
+}
+@Test
+public void test() throws IOException, InterruptedException {
+driver.findElement(By.id("searchboxinput")).sendKeys("sector 6, vashi");
+driver.findElement(By.xpath(".//*[@id='searchbox-searchbutton']")).click();
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+Thread.sleep(5000);
+String s1 =
+driver.findElement(By.xpath(".//*[@id='pane']/div/div[2]/div/div/div[1]/div[3]/div[1]/h1")).getText()
+;
+String s2 =
+driver.findElement(By.xpath("//*[@id='pane']/div/div[2]/div/div/div[1]/div[3]/h2[2]/span")).getText
+();
+String s3 =
+driver.findElement(By.xpath(".//*[@id='pane']/div/div[2]/div/div/div[1]/div[3]/h2[3]/span")).getText
+();
+String s = s1 + ", " + s2 +", " + s3;
+System.out.println(s);
+File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+FileUtils.copyFile(src, new File("C:/selenium/mapsjunit.png"));
+driver.findElement(By.xpath(".//*[@id='pane']/div/div[2]/div/div/div[1]/button[2]")).click();
+driver.findElement(By.xpath(".//*[@id='sb_ifc51']/input")).sendKeys("LTI Mahape");
+driver.findElement(By.xpath(".//*[@id='directions-searchbox-0']/button[1]")).click();
+String time1 =
+driver.findElement(By.xpath(".//*[@id='pane']/div/div[2]/div/div/div[5]/div[1]/div[2]/div[1]/div[1]/d
+iv[1]/span[1]")).getText();
+/* String[] b = time1.split(" ");
+b[0] = b[0].replaceAll("[^\\d.]", "");
+int first1 = Integer.parseInt(b[0]);*/
+System.out.println("Time : "+time1);
+String distance =
+driver.findElement(By.xpath("//*[@id='pane']/div/div[2]/div/div/div[5]/div[1]/div[2]/div[1]/div[1]/di
+v[2]/div")).getText();
+/*String[] a = distance.split(" ");
+a[0] = a[0].replaceAll("[^\\d.]", "");
+int dist = Integer.parseInt(a[0]);*/
+System.out.println("Distance : " +distance);
+File src1= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+FileUtils.copyFile(src1, new File("C:/selenium/mapsjuni2t.png"));
+}
+}
+package scripts;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class DTDfirst {
+private WebDriver driver;
+@DataProvider (name = "Creds")
+public String[][] DP1()
+{
+String[][] data = new String[3][2];
+data[0][0]="jake";
+data[0][1]="jake1";
+data[1][0]="jim";
+data[1][1]="jim2";
+data[2][0]="jaaa";
+data[2][1]="jaaa2";
+return data;
+}
+@Test(dataProvider="Creds")
+public void f(String username, String password) throws InterruptedException {
+driver.get("http://newtours.demoaut.com");
+driver.findElement(By.name("userName")).sendKeys(username);
+driver.findElement(By.name("password")).sendKeys(password);
+Thread.sleep(2000);
+}
+@BeforeTest
+public void beforeTest() {
+System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+@AfterTest
+public void afterTest() {
+driver.quit();
+}
+}
+package scripts;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class flipjunit {
+private WebDriver driver;
+@Before
+public void setUp() throws Exception {
+System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+@After
+public void tearDown() throws Exception {
+}
+@Test
+public void test() {
+driver.get("https://www.flipkart.com/");
+driver.findElement(By.xpath(".//*[@id='container']/div/header/div[1]/div[2]/div/div/div[2]/f
+orm/div/div[1]/div/input")).sendKeys("Mobiles");
+driver.findElement(By.xpath(".//*[@id='container']/div/header/div[1]/div[2]/div/div/div[2]/f
+orm/div/div[2]/button")).click();
+}
+}
+package scripts;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class flipkartNG {
+private WebDriver driver;
+ @Test
+ public void f() throws InterruptedException, IOException {
+driver.manage().timeouts().pageLoadTimeout(90, TimeUnit.SECONDS);
+ driver.manage().window().maximize();
+
+ driver.get("https://www.flipkart.com/");
+ Actions action = new Actions(driver);
+ WebElement e =
+driver.findElement(By.xpath("html/body/div[1]/div/header/div[2]/div/ul/li[1]/a/span"));
+ action.moveToElement(e).build().perform();
+ Thread.sleep(3000);
+ WebElement mnc =
+driver.findElement(By.xpath("html/body/div[1]/div/header/div[2]/div/ul/li[1]/ul/li/ul/li[1]/ul/li[5]/a/
+span"));
+ action.moveToElement(mnc).click().build().perform();
+ Thread.sleep(3000);
+
+ /* WebElement l = driver.findElement(By.linkText("AmazonBasics Mini Bluetooth Speaker -
+Black"));
+ System.out.println(l.getTagName());
+ */// html/body/div[2]/div[5]/div/div[6]/div/div/div/div[2]/div[6]/div[1]/div[3]/div[1]/a[1]
+ // html/body/div[2]/div[5]/div/div[6]/div/div/div/div[2]/div[6]/div[1]/div[3]/div[4]/span[2]
+
+ JavascriptExecutor jse = (JavascriptExecutor)driver;
+jse.executeScript("window.scrollBy(0,3000)", "");
+String a =
+driver.findElement(By.xpath("html/body/div[1]/div/footer/div/div[1]/div[3]/div[2]/a[1]")).getAttribu
+te("href");
+System.out.println(a);
+writeexcel(a);
+ }
+ @BeforeTest
+ public void beforeTest() {
+ System.setProperty("webdriver.chrome.driver",
+"test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+ }
+ @AfterTest
+ public void afterTest() {
+ driver.close();
+ }
+
+ public void writeexcel(String num) throws IOException
+ {
+ Workbook wb = new XSSFWorkbook();
+ CreationHelper createHelper = wb.getCreationHelper();
+ Sheet sheet = wb.createSheet("Sheet1");
+ Row row = sheet.createRow(1);
+ Cell cell = row.createCell(1);
+ cell.setCellValue(createHelper.createRichTextString(num));
+
+ FileOutputStream fos = new FileOutputStream("data/Exportexcel.xlsx");
+ wb.write(fos);
+ fos.close();
+ }
+}
+package scripts;
+import java.util.concurrent.TimeUnit;
+import org.testng.annotations.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+public class format {
+ private WebDriver driver;
+ private String baseUrl;
+ @BeforeClass(alwaysRun = true)
+ public void setUp() throws Exception {
+System.setProperty("webdriver.gecko.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\geckodriver.exe");
+ driver = new FirefoxDriver();
+ baseUrl = "https://www.wikipedia.org/";
+ driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+ }
+ @Test
+ public void testUntitled() throws Exception {
+ driver.get(baseUrl + "/");
+ driver.findElement(By.cssSelector("#js-link-box-en > strong")).click();
+ driver.findElement(By.id("searchInput")).clear();
+ driver.findElement(By.id("searchInput")).sendKeys("kurt cobain");
+ driver.findElement(By.id("searchButton")).click();
+ driver.findElement(By.cssSelector("p > a[title=\"Aberdeen, Washington\"]")).click();
+ }
+}
+/*
+*
+*
+* */
+package scripts;
+import java.util.ArrayList;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class GoogleYahooGoogle {
+private WebDriver driver;
+@Test
+public void f() throws InterruptedException {
+driver.get("https://www.google.com");
+driver.findElement(By.id("lst-ib")).clear();
+driver.findElement(By.id("lst-ib")).sendKeys("yahoo");
+driver.findElement(By.cssSelector("input[name=\"btnK\"]")).sendKeys(Keys.ENTER);
+driver.findElement(By.linkText("Yahoo")).click();
+driver.findElement(By.cssSelector("#uh-search-box")).clear();
+driver.findElement(By.cssSelector("#uh-search-box")).sendKeys("google");
+driver.findElement(By.cssSelector("#uh-search-button")).sendKeys(Keys.ENTER);
+Thread.sleep(5000);
+ArrayList<String> tabs = new ArrayList<String>(driver.getWindowHandles());
+driver.findElement(By.xpath("//li[1]/div/div/div[1]/h3/a")).click();
+driver.switchTo().window(tabs.get(0));
+// ERROR: Caught exception [ERROR: Unsupported command [selectWindow |
+google - Yahoo India Search Results | ]]
+Assert.assertEquals(driver.getTitle(), "google - Yahoo India Search Results");
+}
+@BeforeTest
+public void beforeTest() {
+System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+@AfterTest
+public void afterTest() {
+}
+}
+package scripts;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.AfterClass;
+public class Headless_Phantom {
+private WebDriver driver;
+@Test
+ public void f() {
+driver.get("https://www.wikipedia.org/");
+driver.findElement(By.id("searchInput")).sendKeys("selenium");
+driver.findElement(By.id("searchInput")).sendKeys(Keys.ENTER);
+System.out.println(driver.getTitle());
+ }
+ @BeforeClass
+ public void beforeClass() {
+ System.setProperty("phantomjs.binary.path",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\phantomjs.exe");
+ driver = new PhantomJSDriver();
+ }
+ @AfterClass
+ public void afterClass() {
+ }
+}
+package scripts;
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class herokuappNG {
+private WebDriver driver;
+ @Test(groups={"Performance"})
+ public void f() {
+ driver.get("https://the-internet.herokuapp.com/checkboxes");
+ driver.findElement(By.xpath(".//*[@id='checkboxes']/input[1]")).click();
+ String str =
+driver.findElement(By.xpath(".//*[@id='checkboxes']/input[1]")).getAttribute("checked");
+ AssertJUnit.assertEquals("true", str);
+
+ }
+ @BeforeTest
+// @Parameters ({"browser"})
+ public void Test12(/*String browser*/) {
+/* if(browser.equals("Chrome"))
+ {*/
+ System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+ driver = new ChromeDriver();
+ /*}
+ else if(browser.equals("AFirefox"))
+ {
+ System.setProperty("webdriver.gecko.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\geckodriver.exe");
+ driver = new FirefoxDriver();
+ }*/
+ }
+ @AfterTest(groups={"Usability"})
+ public void afterTest() {
+ driver.quit();
+ }
+}
+package scripts;
+import java.net.URL;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.Platform;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class HUBNG {
+public WebDriver driver;
+@Test
+ public void f() throws Exception {
+String node = "http://192.168.43.212:5555";
+System.setProperty("webdriver.chrome.driver", "D:\\chromedriver.exe");
+DesiredCapabilities capability = DesiredCapabilities.firefox();
+capability.setBrowserName("firefox");
+capability.setPlatform(Platform.WIN8_1);
+driver = new RemoteWebDriver(new URL(node) , capability);
+driver.manage().window().maximize();
+driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+ }
+ @BeforeTest
+ public void beforeTest() {
+
+ }
+ @AfterTest
+ public void afterTest() {
+
+ }
+}
+package scripts;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class ibmNG {
+ private WebDriver driver;
+
+@Test
+ public void f() {
+driver.manage().timeouts().pageLoadTimeout(90, TimeUnit.SECONDS);
+ driver.manage().window().maximize();
+ driver.get("https://www.ibm.com/");
+ driver.findElement(By.id("q")).sendKeys("Websphere");
+ driver.findElement(By.id("ibm-search")).click();
+
+driver.findElement(By.xpath("html/body/div[1]/div[4]/main/div/div/div/div/div[6]/div[2]/div[2]/h3/
+a")).click();
+ driver.switchTo().frame(driver.findElement(By.className("kc-iframe")));
+ Assert.assertEquals("WebSphere Application Server Network Deployment, Version 8.5.5
+documentation",
+driver.findElement(By.xpath("html/body/div[1]/div/main/div[1]/div/h1")).getText());
+ //System.out.println(heade);
+ String a =
+driver.findElement(By.xpath("html/body/div[1]/div/main/div[1]/div/h1")).getText();
+ Assert.assertTrue(a.matches("Web[S|s]phere Application [S|s]erver Network
+Deployment, Version 8.5.5 documentation"));
+ }
+
+@BeforeTest
+ public void beforeTest() {
+System.setProperty("webdriver.chrome.driver",
+"test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+ }
+ @AfterTest
+ public void afterTest() {
+ driver.quit();
+ }
+}
+//Data Driven Test Framework using Selenium and TestNG
+//This Test performs search for the movie and looks for the attributes on the result page
+//Data is read from the Excel SS - movie_data.xls
+package scripts;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.Assert;
+import org.testng.annotations.*;
+import java.io.File;
+import jxl.*;
+public class IMDBexcelNG{
+ private WebDriver driver;
+
+ @BeforeTest
+ public void setUp() throws Exception {
+ System.setProperty("webdriver.gecko.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\geckodriver.exe");
+driver = new FirefoxDriver();
+ }
+
+
+ @DataProvider (name = "DP1")
+ public Object[][] createData1() {
+ Object[][] retObjArr=getTableArray("D:\\movie_data.xls",
+ "DataPool", "imdbTestData1");
+ return(retObjArr);
+ }
+
+@Test (dataProvider="DP1")
+public void testDataProviderExample(String movieTitle,
+ String directorName, String moviePlot, String actorName) throws Exception {
+driver.get("http://www.imdb.com");
+driver.findElement(By.id("navbar-query")).sendKeys(movieTitle);
+driver.findElement(By.id("navbar-submit-button")).click();
+/*for (int second = 0;; second++) {
+if (second >= 60) fail("Not found");
+try {
+driver.findElement(By.linkText(movieTitle));
+if (selenium.isElementPresent("link="+movieTitle))
+break;
+} catch (Exception e) {}
+Thread.sleep(1000);
+}*/
+driver.findElement(By.linkText(movieTitle)).click();
+/* for (int second = 0;; second++) {
+if (second >= 60) fail("timeout");
+try { if (selenium.isElementPresent("xpath=/html/body[@id='styleguidev2']/div[@id='wrapper']/div[@id='root']/div[@id='pagecontent']/div[@id='content-2-
+wide']/div[@id='maindetails_center_top']/div/div/table[@id='title-overview-widgetlayout']/tbody/tr[1]/td[@id='overview-top']/div[6]/a[3]"))
+break; } catch (Exception e) {}
+Thread.sleep(1000);
+}*/
+Thread.sleep(5000);
+ Assert.assertEquals(directorName,
+driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/div[2]/div/div[3]/div[2]/div[
+1]/div[2]/span/a/span")).getText());
+ //verify movie plot is present in the movie details page
+ Assert.assertEquals(moviePlot,
+driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/div[2]/div/div[3]/div[2]/div[
+1]/div[1]")).getText());
+ //verifyTrue(selenium.isTextPresent(moviePlot));
+ //verify movie actor name is present in the movie details page
+ Assert.assertEquals(actorName,
+driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/div[2]/div/div[3]/div[2]/div[
+1]/div[4]/span[1]/a/span")).getText());
+ // verifyTrue(selenium.isTextPresent(actorName));
+}
+
+ @AfterClass
+ public void tearDown()
+ {
+ driver.quit();
+ }
+
+
+ public String[][] getTableArray(String xlFilePath, String sheetName, String tableName)
+{
+String[][] tabArray=null;
+try{
+Workbook workbook = Workbook.getWorkbook(new File(xlFilePath));
+Sheet sheet = workbook.getSheet(sheetName);
+int startRow,startCol, endRow, endCol,ci,cj;
+Cell tableStart=sheet.findCell(tableName);
+startRow=tableStart.getRow();
+startCol=tableStart.getColumn();
+Cell tableEnd= sheet.findCell(tableName, startCol+1,startRow+1, 100,
+64000, false);
+endRow=tableEnd.getRow();
+endCol=tableEnd.getColumn();
+System.out.println("startRow="+startRow+", endRow="+endRow+", " +
+"startCol="+startCol+", endCol="+endCol);
+tabArray=new String[endRow-startRow-1][endCol-startCol-1];
+ci=0;
+for (int i=startRow+1;i<endRow;i++,ci++){
+cj=0;
+for (int j=startCol+1;j<endCol;j++,cj++){
+tabArray[ci][cj]=sheet.getCell(j,i).getContents();
+}
+}
+}
+catch (Exception e) {
+System.out.println("error in getTableArray()");
+}
+return(tabArray);
+}
+
+
+}//end of class
+package scripts;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class JohnGrishamwiki {
+ private WebDriver driver;
+ @Test
+ public void f() {
+ driver.get("https://www.wikipedia.org");
+ driver.findElement(By.id("searchInput")).sendKeys("John Grisham");
+ driver.findElement(By.xpath(".//*[@id='search-form']/fieldset/button")).click();
+/* JavascriptExecutor jse = (JavascriptExecutor)driver;
+ jse.executeScript("window.scrollBy(0,4000)", "");*/
+ WebElement abc = driver.findElement(By.xpath(".//*[@id='mw-content-text']/div/div[4]"));
+ List<WebElement> autoSuggest1 = abc.findElements(By.tagName("a"));
+ for(WebElement e : autoSuggest1)
+ {
+ System.out.println(e.getText());
+ }
+ }
+ @BeforeTest
+ public void beforeTest() {
+ System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+ driver = new ChromeDriver();
+ }
+ @AfterTest
+ public void afterTest() {
+ }
+}
+package scripts;
+import java.util.List;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class jquery {
+private WebDriver driver;
+@Test
+ public void f() throws InterruptedException {
+System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+ String abc = "Java";
+ driver.get("https://jqueryui.com/autocomplete/");
+ Thread.sleep(3000);
+ driver.switchTo().frame(driver.findElement(By.className("demo-frame")));
+
+ driver.findElement(By.id("tags")).sendKeys("J");
+ Thread.sleep(2000);
+
+ List<WebElement> autoSuggest1 = driver.findElements(By.className("ui-menu-item"));
+
+// WebDriverWait wait = new WebDriverWait(autoSuggest1 , 15);
+ // wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.id(ui-id-1))))
+
+ for(WebElement option1 : autoSuggest1){
+ System.out.println(option1);
+ if(option1.getText().equals(abc)) {
+ System.out.println("Trying to select: "+abc);
+ option1.click();
+ break;
+ }
+ }
+ }
+ @BeforeTest
+ public void beforeTest() {
+ }
+ @AfterTest
+ public void afterTest() {
+ }
+}
+package scripts;
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class killbillNG {
+private static final DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+private WebDriver driver;
+@Test
+public void f() {
+driver.get("https://www.imdb.com");
+//driver.manage().window().maximize();
+driver.findElement(By.xpath("//*[@id=\"navbar-query\"]")).sendKeys("Kill Bill: Vol.
+1");
+driver.findElement(By.xpath("//*[@id=\"navbar-submit-button\"]")).click();
+driver.findElement(By.xpath("//*[@id=\"main\"]/div/div[2]/table/tbody/tr[1]/td[2]/a")).click
+();
+String c = driver.findElement(By.xpath("//*[@id=\"title-overviewwidget\"]/div[2]/div[2]/div/div[2]/div[2]/div/time")).getText();
+String[] a = c.split(" ");
+a[0] = a[0].replaceAll("[^\\d.]", "");
+a[1] = a[1].replaceAll("[^\\d.]", "");
+int first = Integer.parseInt(a[0]);
+int sec = Integer.parseInt(a[1]);
+first*=60;
+int time = first + sec;
+AssertJUnit.assertEquals(111, time);
+}
+@BeforeTest
+public void beforeTest() {
+System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+@AfterTest
+public void afterTest() throws InterruptedException, IOException {
+try
+{
+AssertJUnit.assertEquals("Jonatthan Demme",
+driver.findElement(By.xpath("//*[@id=\"title-overviewwidget\"]/div[3]/div[2]/div[1]/div[2]/span/a/span")).getText());
+}
+catch(AssertionError e)
+{
+Date date = new Date();
+String a = sdf.format(date);
+String b = a.replace(":", "-");
+System.out.println(b);
+File src1= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+FileUtils.copyFile(src1, new File("C:/selenium/"+b+".png"));
+}
+//credit_summary_item
+//List<WebElement> autoSuggest = new ArrayList<WebElement>(3);
+finally{
+try {
+Thread.sleep(1000);
+} catch (Exception e) {
+e.printStackTrace();
+}
+/*for(int i=1;i<=autoSuggest.size();i++)
+{
+autoSuggest.add(driver.findElement(By.xpath(".//*[@id=\"title-overviewwidget\"]/div[3]/div[2]/div[1]/div[4]/span["+i+"]/a/span")));
+}
+//*[@id="title-overview-widget"]/div[3]/div[2]/div[1]/div[4]/span[2]
+Iterator<WebElement> itr = autoSuggest.iterator();
+while(itr.hasNext()) {
+System.out.println(itr.next());
+}*/
+// System.out.println(autoSuggest);
+for(int i=1;i<=3;i++)
+{
+System.out.println(driver.findElement(By.xpath(".//*[@id=\"titleoverview-widget\"]/div[3]/div[2]/div[1]/div[4]/span["+i+"]/a/span")).getText());
+}
+String ac = driver.findElement(By.xpath("//*[@id=\"title-overviewwidget\"]/div[2]/div[2]/div/div[1]/div[1]/a/span")).getText();
+System.out.println(ac);
+driver.quit();
+}
+}
+}
+package scripts;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+public class manipal {
+public static void main(String[] args) throws InterruptedException {
+System.setProperty("webdriver.chrome.driver","test//resources//drivers//chromedriver.exe
+");
+WebDriver driver = new ChromeDriver();
+driver.get("https://www.manipal.edu/");
+driver.manage().timeouts().implicitlyWait(35, TimeUnit.SECONDS);
+//academics
+Actions action = new Actions(driver);
+WebElement we = driver.findElement(By.xpath("//*[@id='primarysticky']/div/ul/li[2]/a"));
+action.moveToElement(we).build().perform();
+Thread.sleep(5000);
+//institute list
+Actions action1 = new Actions(driver);
+WebElement we1 = driver.findElement(By.xpath("//*[@id='fatmenu']/div/ul/li[3]/a"));
+action1.moveToElement(we1).build().perform();
+Thread.sleep(5000);
+//engineering
+Actions action11 = new Actions(driver);
+WebElement we11 = driver.findElement(By.xpath("//*[@id='fatmenu']/div/div/ul[1]/li[6]/a[1]/span"));
+action11.moveToElement(we11).build().perform();
+Thread.sleep(5000);
+//programs and click
+Actions action111 = new Actions(driver);
+WebElement we111 = driver.findElement(By.xpath("//*[@id='fatmenu']/div/div/ul[2]/li[1]/ul[1]/li[2]/a/span"));
+action111.moveToElement(we111).build().perform();
+driver.findElement(By.xpath("//*[@id='fatmenu']/div/div/ul[2]/li[1]/ul[1]/li[2]/a/span")).click();
+String e =
+driver.findElement(By.xpath("/html/body/div/div[3]/div[5]/div[2]/div/div/div[2]/div[1]/h6")).getText
+();
+System.out.println(e);
+Thread.sleep(5000);
+//for scroll down
+JavascriptExecutor jse = (JavascriptExecutor)driver;
+jse.executeScript("window.scrollBy(0,1000)", "");
+driver.findElement(By.xpath("//*[@id='programdetails']/div[1]/ul[1]/li[7]/a")).click();
+System.out.print(driver.findElement(By.xpath("//*[@id=\"call-toaction\"]/div[2]/div[1]/div[3]/div[1]/div[1]")).getText());
+System.out.println(" "+driver.findElement(By.xpath("//*[@id='call-toaction']/div[2]/div[1]/div[3]/div[1]/div[2]")).getText());
+}
+}
+package scripts;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.AssertJUnit;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.interactions.Actions;
+public class manipalJunit {
+private WebDriver driver;
+@BeforeMethod
+public void setUp() throws Exception {
+System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+@AfterMethod
+public void tearDown() throws Exception {
+driver.quit();
+}
+@Test
+public void test() throws InterruptedException {
+driver.get("https://www.manipal.edu/");
+driver.manage().timeouts().implicitlyWait(35, TimeUnit.SECONDS);
+//academics
+Actions action = new Actions(driver);
+WebElement we = driver.findElement(By.xpath("//*[@id='primarysticky']/div/ul/li[2]/a"));
+action.moveToElement(we).build().perform();
+Thread.sleep(5000);
+//institute list
+Actions action1 = new Actions(driver);
+WebElement we1 = driver.findElement(By.xpath("//*[@id='fatmenu']/div/ul/li[3]/a"));
+action1.moveToElement(we1).build().perform();
+Thread.sleep(5000);
+//engineering
+Actions action11 = new Actions(driver);
+WebElement we11 = driver.findElement(By.xpath("//*[@id='fatmenu']/div/div/ul[1]/li[6]/a[1]/span"));
+action11.moveToElement(we11).build().perform();
+Thread.sleep(5000);
+//programs and click
+Actions action111 = new Actions(driver);
+WebElement we111 = driver.findElement(By.xpath("//*[@id='fatmenu']/div/div/ul[2]/li[1]/ul[1]/li[2]/a/span"));
+action111.moveToElement(we111).build().perform();
+driver.findElement(By.xpath("//*[@id='fatmenu']/div/div/ul[2]/li[1]/ul[1]/li[2]/a/span")).click();
+AssertJUnit.assertEquals("50 PROGRAMS",
+driver.findElement(By.xpath("/html/body/div/div[3]/div[5]/div[2]/div/div/div[2]/div[1]/h6")).getText
+());
+Thread.sleep(5000);
+//for scroll down
+JavascriptExecutor jse = (JavascriptExecutor)driver;
+jse.executeScript("window.scrollBy(0,1000)", "");
+driver.findElement(By.xpath("//*[@id='programdetails']/div[1]/ul[1]/li[7]/a")).click();
+String a1 = driver.findElement(By.xpath("//*[@id=\"call-toaction\"]/div[2]/div[1]/div[3]/div[1]/div[1]")).getText();
+String a2 = driver.findElement(By.xpath("//*[@id='call-toaction']/div[2]/div[1]/div[3]/div[1]/div[2]")).getText();
+String abc = a1 + " " + a2;
+System.out.println(abc);
+AssertJUnit.assertEquals("17 Jul '18", abc);
+}
+}
+package scripts;
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.apache.commons.io.FileUtils;
+public class maps {
+public static void main(String[] args) {
+System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+WebDriver driver = new ChromeDriver();
+driver.get("https://www.google.com/maps");
+driver.findElement(By.id("searchboxinput")).sendKeys("harvard business school,
+Boston, MA 02163, United States");
+driver.findElement(By.xpath(".//*[@id='searchbox-searchbutton']")).click();
+//*[@id="pane"]/div/div[2]/div/div/div[1]/div[3]/div[1]/h1
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+String a =
+driver.findElement(By.xpath(".//*[@id='pane']/div/div[2]/div/div/div[1]/div[3]/div[1]/h1")).getText()
+;
+System.out.println(a);
+String phno =
+driver.findElement(By.xpath("//*[@id='pane']/div/div[2]/div/div/div[6]/div/div[1]/span[3]/button")).
+getText();
+System.out.println(phno);
+String rate =
+driver.findElement(By.xpath(".//*[@id='pane']/div/div[2]/div/div/div[1]/div[3]/div[2]/div/div[1]/spa
+n[1]/span/span")).getText();
+System.out.println(rate);
+File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+try {
+FileUtils.copyFile(src, new File("C:/selenium/error.png"));
+}
+catch (IOException e)
+{
+ System.out.println(e.getMessage());
+}
+}
+}
+package scripts;
+import java.util.concurrent.TimeUnit;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.AssertJUnit;
+public class mapsjunit {
+private WebDriver driver;
+@Before
+public void setUp() throws Exception {
+System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+@Test
+public void test() {
+driver.get("https://www.google.com/maps");
+driver.findElement(By.id("searchboxinput")).sendKeys("harvard business school,
+Boston, MA 02163, United States");
+driver.findElement(By.xpath(".//*[@id='searchbox-searchbutton']")).click();
+driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+AssertJUnit.assertEquals("Harvard Business School",
+driver.findElement(By.xpath(".//*[@id='pane']/div/div[2]/div/div/div[1]/div[3]/div[1]/h1")).getText()
+);
+AssertJUnit.assertEquals("+1 617-495-6000",
+driver.findElement(By.xpath("//*[@id='pane']/div/div[2]/div/div/div[6]/div/div[1]/span[3]/button")).
+getText());
+}
+@After
+public void tearDown() throws Exception {
+driver.quit();
+}
+}
+package scripts;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.FindBy;
+public class pagefactoryG {
+@FindBy(id = "lst-ib")
+WebElement _searchField;
+@FindBy(linkText = "Yahoo")
+WebElement clickyahoo;
+}
+package scripts;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.PageFactory;
+import org.testng.annotations.AfterTest;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+public class pagefactoryNG{
+private WebDriver driver;
+/*
+By abc = By.linkText("Yahoo");
+//@FindBy (name = "q")
+*/
+ @Test
+ public void f() throws InterruptedException {
+ driver.get("https://www.google.com");
+ pagefactoryG page = PageFactory.initElements(driver, pagefactoryG.class);
+
+ page._searchField.sendKeys("yahoo");
+ page._searchField.sendKeys(Keys.ENTER);
+//_searchField.sendKeys("yahoo");
+page.clickyahoo.click();
+ }
+ @BeforeTest
+ public void beforeTest() {
+ System.setProperty("webdriver.chrome.driver",
+"test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+ }
+ @AfterTest
+public void afterTest() {
+ driver.quit();
+ }
+}
+package scripts;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+public class POIDTD {
+ WebDriver driver;
+@Test (dataProvider = "DP1")
+public void testDataProviderExample(String movieTitle,
+ String directorName, String actorName, String moviePlot) throws Exception {
+//driver.get("http://www.imdb.com");
+driver.findElement(By.id("navbar-query")).sendKeys(movieTitle);
+driver.findElement(By.id("navbar-submit-button")).click();
+driver.findElement(By.linkText(movieTitle)).click();
+/* for (int second = 0;; second++) {
+if (second >= 60) fail("timeout");
+try { if (selenium.isElementPresent("xpath=/html/body[@id='styleguidev2']/div[@id='wrapper']/div[@id='root']/div[@id='pagecontent']/div[@id='content-2-
+wide']/div[@id='maindetails_center_top']/div/div/table[@id='title-overview-widgetlayout']/tbody/tr[1]/td[@id='overview-top']/div[6]/a[3]"))
+break; } catch (Exception e) {}
+Thread.sleep(1000);
+}*/
+Thread.sleep(5000);
+ Assert.assertEquals(directorName,
+driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/div[2]/div/div[3]/div[2]/div[
+1]/div[2]/span/a/span")).getText());
+ //verify movie plot is present in the movie details page
+ Assert.assertEquals(moviePlot,
+driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/div[2]/div/div[3]/div[2]/div[
+1]/div[1]")).getText());
+ //verifyTrue(selenium.isTextPresent(moviePlot));
+ //verify movie actor name is present in the movie details page
+ Assert.assertEquals(actorName,
+driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/div[2]/div/div[3]/div[2]/div[
+1]/div[4]/span[1]/a/span")).getText());
+ // verifyTrue(selenium.isTextPresent(actorName));
+ }
+
+ @BeforeClass
+ public void setUp() throws Exception {
+ System.setProperty("webdriver.gecko.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\geckodriver.exe");
+driver = new FirefoxDriver();
+driver.get("https://www.imdb.com/");
+ }
+
+
+ @DataProvider (name = "DP1")
+ public Object[][] createData1() throws IOException{
+ Object[][] retObjArr=getExcelData("D:\\movie_data_POI.xls","DataPool");
+ return(retObjArr);
+ }
+
+ @AfterClass
+ public void afterTest() {
+ }
+
+ public String[][] getExcelData(String fileName, String sheetName)
+{
+ String[][] arrayExcelData = null;
+ Workbook wb = null;
+ try{
+ File file = new File(fileName);
+ FileInputStream fs = new FileInputStream(file);
+
+ if(fileName.substring(fileName.indexOf(".")).equals(".xlsx"))
+ {
+ wb = new XSSFWorkbook(fs);
+
+ }
+ else if(fileName.substring(fileName.indexOf(".")).equals(".xls"))
+ {
+ wb = new HSSFWorkbook(fs);
+ }
+
+
+
+ Sheet sh = wb.getSheet(sheetName);
+ int totalNoofRows = sh.getPhysicalNumberOfRows();
+ int totalNoofCols = sh.getRow(0).getPhysicalNumberOfCells();
+
+ System.out.println("Rows : "+totalNoofRows+"Columns : "+totalNoofCols);
+ arrayExcelData = new String[totalNoofRows-1][totalNoofCols];
+ for(int i=1;i <= totalNoofRows-1; i++)
+ {
+ for(int j=0;j <= totalNoofCols-1;j++)
+ {
+ arrayExcelData[i-1][j]=sh.getRow(i).getCell(j).getStringCellValue().toString();
+ }
+ }
+
+
+ }
+ catch (Exception e) {
+ System.out.println("error in getTableArray()");
+
+ }
+ return arrayExcelData;
+ }
+}
+package scripts;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import org.openqa.selenium.*;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class PrinttoExcelDTD {
+WebDriver driver;
+@DataProvider (name = "DP1")
+ public Object[][] createData1() throws IOException{
+ Object[][] retObjArr=getExcelData("D:\\datacliq.xlsx","Sheet1");
+ return(retObjArr);
+ }
+ @Test (dataProvider ="DP1")
+ public void f(String brands) throws InterruptedException {
+ Thread.sleep(5000);
+ driver.findElement(By.id("js-site-search-input")).clear();
+ driver.findElement(By.id("js-site-search-input")).sendKeys(brands);
+ driver.findElement(By.id("searchButton")).click();
+ driver.manage().timeouts().implicitlyWait(25, TimeUnit.SECONDS);
+
+//html/body/main/div[11]/div/div/div[1]/div/div[3]/ul/li[1]/div/div[2]/div[3]/p[2]/span/span
+
+//html/body/main/div[11]/div/div/div[1]/div/div[3]/ul/li[2]/div/div[2]/div[3]/p[2]/span/span
+ Thread.sleep(5000);
+ List<WebElement> lista = driver.findElements(By.className("priceFormat"));
+ /*
+ for(int i=0;i<11;i++)
+ {
+
+if(driver.findElement(By.xpath("html/body/main/div[11]/div/div/div[1]/div/div[3]/ul/li["+(i+1)+"]/div
+/div[2]/div[3]/p[3]/span"))!=null)
+ {
+
+lista.add(driver.findElement(By.xpath("html/body/main/div[11]/div/div/div[1]/div/div[3]/ul/li["+(i+1
+)+"]/div/div[2]/div[3]/p[2]/span/span")).getText());
+ }
+ else
+ {
+
+lista.add(driver.findElement(By.xpath("html/body/main/div[11]/div/div/div[1]/div/div[3]/ul/li["+(i+1
+)+"]/div/div[2]/div[3]/p[1]/span/span")).getText());
+
+ }
+ JavascriptExecutor jse = (JavascriptExecutor)driver;
+ jse.executeScript("window.scrollBy(0,150)", "");
+ Thread.sleep(1000);
+ }*/
+ Thread.sleep(10000);
+
+ long[] a = new long[lista.size()];
+ String oldStr="";
+ for ( int i = 0; i <= lista.size(); i++) {
+
+ oldStr = lista.get(i).toString();
+ a[i] = Integer.parseInt(oldStr);
+
+ }
+
+ for(int i=0;i<a.length;i++)
+ {
+ if(a[i] >= 20000)
+ {
+ // driver.findElement(By.)
+ }
+ }
+ // System.out.print(lista);
+ /* long[] a = new long[lista.size()];
+
+ for(int i = 0 ; i < lista.size();i++)
+ {
+ a[i] = Integer.parseInt(lista.get(i));
+ }
+
+ // Arrays.sort(a);
+ for(int i = 0; i < lista.size(); i++)
+ {
+
+ if(Integer.parseInt(lista.get(i)) >= 5000)
+ {
+ //System.out.println(a[i]);
+
+System.out.println(driver.findElement(By.xpath("html/body/main/div[11]/div/div/div[1]/div
+/div[3]/ul/li["+(i+1)+"]/div/div[2]/div[2]/h2/a")).getText());
+ }
+ else
+ {
+ continue;
+ }
+ }
+ //html/body/main/div[11]/div/div/div[1]/div/div[3]/ul/li[1]/div/div[2]/div[2]/h2/a
+ //html/body/main/div[11]/div/div/div[1]/div/div[3]/ul/li[2]/div/div[2]/div[2]/h2/a
+ */
+
+ }
+ @BeforeTest
+ public void beforeTest() {
+ System.setProperty("webdriver.gecko.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\geckodriver.exe");
+driver = new FirefoxDriver();
+driver.get("https://www.tatacliq.com/");
+
+ }
+
+ @AfterTest
+ public void afterTest() {
+ driver.close();
+ }
+ public String[][] getExcelData(String fileName, String sheetName)
+{
+ String[][] arrayExcelData = null;
+ Workbook wb = null;
+ try{
+ File file = new File(fileName);
+ FileInputStream fs = new FileInputStream(file);
+
+ if(fileName.substring(fileName.indexOf(".")).equals(".xlsx"))
+ {
+ wb = new XSSFWorkbook(fs);
+
+ }
+ else if(fileName.substring(fileName.indexOf(".")).equals(".xls"))
+ {
+ wb = new HSSFWorkbook(fs);
+ }
+
+
+
+ Sheet sh = wb.getSheet(sheetName);
+ int totalNoofRows = sh.getPhysicalNumberOfRows();
+ int totalNoofCols = sh.getRow(0).getPhysicalNumberOfCells();
+
+ System.out.println("Rows : "+totalNoofRows+"Columns : "+totalNoofCols);
+ arrayExcelData = new String[totalNoofRows-1][totalNoofCols];
+ for(int i=1;i <= totalNoofRows-1; i++)
+ {
+ for(int j=0;j <= totalNoofCols-1;j++)
+ {
+ arrayExcelData[i-1][j]=sh.getRow(i).getCell(j).getStringCellValue().toString();
+ }
+ }
+
+
+ }
+ catch (Exception e) {
+ System.out.println("error in getTableArray()");
+
+ }
+ return arrayExcelData;
+ }
+
+ public void writeexcel(String num) throws IOException
+ {
+ Workbook wb = new XSSFWorkbook();
+ CreationHelper createHelper = wb.getCreationHelper();
+ Sheet sheet = wb.createSheet("Sheet1");
+ Row row = sheet.createRow(1);
+ Cell cell = row.createCell(1);
+ cell.setCellValue(createHelper.createRichTextString(num));
+
+ FileOutputStream fos = new FileOutputStream("data/Exportexcel.xlsx");
+ wb.write(fos);
+ fos.close();
+ }
+
+}
+package scripts;
+import org.testng.annotations.Test;
+public class priority {
+ @Test(priority=0, enabled =false)
+ public void f() {
+ System.out.println("1");
+ }
+ @Test(priority=3)
+ public void nkn() {
+ System.out.println("2");
+ }
+
+ @Test(priority=2)
+ public void qq() {
+ System.out.println("3");
+ }
+
+ @Test(priority=1)
+ public void z() {
+ System.out.println("4");
+ }
+}
+package scripts;
+import java.io.File;
+import java.io.FileInputStream;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.NoSuchElementException;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class question1shoppersstop {
+public WebDriver driver;
+@DataProvider (name = "DP1")
+public Object[][] createData1() {
+Object[][] retObjArr=getExcelData("D:\\shoppersstop1.xlsx","Sheet1");
+return(retObjArr);
+}
+@Test (dataProvider = "DP1")
+public void f(String brands) throws InterruptedException {
+driver.get("https://www.shoppersstop.com/");
+driver.findElement(By.id("js-site-search-input")).sendKeys(brands);
+driver.findElement(By.id("js-site-search-input")).sendKeys(Keys.ENTER);
+//List<String> lista = new ArrayList<String>();
+driver.findElement(By.xpath("html/body/main/section[2]/div/div/div[4]/div[1]/div[2]/ul/li[6
+]")).click();
+Thread.sleep(5000);
+//System.out.println(driver.findElement(By.xpath("html/body/main/section[2]/div/div/div[4
+]/div[2]/div[2]/ul/li[1]/div/div[2]/a/div[2]/div")).getText());
+String a = null;
+String b = null;
+int first, second;
+for(int i=0; i < 4 ; i++)
+{
+//isPresent =
+(driver.findElements(By.xpath("html/body/main/section[2]/div/div/div[4]/div[2]/div[2]/ul/li["+i+"]/d
+iv/div[2]/a/div[2]/div/ul/li[3]/span"))).size() > 0;
+//if(isPresent)
+if(isElementPresent(By.xpath("html/body/main/section[2]/div/div/div[4]/div[2]/div[2]/ul/li["
++(i+1)+"]/div/div[2]/a/div[2]/div/ul/li[3]/span")))
+{
+a =
+driver.findElement(By.xpath("html/body/main/section[2]/div/div/div[4]/div[2]/div[2]/ul/li["+(i+1)+"]
+/div/div[2]/a/div[2]/div/ul/li[2]")).getText();
+first = Integer.parseInt(a.substring(3));
+}
+else
+{
+a =
+driver.findElement(By.xpath("html/body/main/section[2]/div/div/div[4]/div[2]/div[2]/ul/li["+(i+2)+"]
+/div/div[2]/a/div[2]/div")).getText();
+first = Integer.parseInt(a.substring(3));
+}
+if(isElementPresent(By.xpath("html/body/main/section[2]/div/div/div[4]/div[2]/div[2]/ul/li["
++(i+2)+"]/div/div[2]/a/div[2]/div/ul/li[3]/span")))
+{
+b =
+driver.findElement(By.xpath("html/body/main/section[2]/div/div/div[4]/div[2]/div[2]/ul/li["+(i+1)+"]
+/div/div[2]/a/div[2]/div/ul/li[2]")).getText();
+second = Integer.parseInt(a.substring(3));
+}
+else
+{
+b =
+driver.findElement(By.xpath("html/body/main/section[2]/div/div/div[4]/div[2]/div[2]/ul/li["+(i+1)+"]
+/div/div[2]/a/div[2]/div")).getText();
+second = Integer.parseInt(a.substring(3));
+}
+System.out.println("a : "+first);
+System.out.println("b: "+second);
+}
+/*
+System.out.println(lista);
+ int a[] = new int[lista.size()];
+// int num;
+ for(int i = 0; i < lista.size(); i++)
+ {
+ a[i] = Integer.parseInt(lista.get(i));
+ }
+ Thread.sleep(5000);
+ for(int i=0; i< a.length; i++)
+ {
+ System.out.println(a[i]);
+ }
+*/
+}
+ private boolean isElementPresent(By by) {
+ try {
+ driver.findElement(by);
+ return true;
+ } catch (NoSuchElementException e) {
+ return false;
+ }
+ }
+@BeforeTest
+public void beforeTest() {
+System.setProperty("webdriver.chrome.driver",
+"test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+driver.manage().window().maximize();
+}
+@AfterTest
+public void afterTest() {
+driver.quit();
+}
+public String[][] getExcelData(String fileName, String sheetName)
+{
+String[][] arrayExcelData = null;
+Workbook wb = null;
+try{
+File file = new File(fileName);
+FileInputStream fs = new FileInputStream(file);
+if(fileName.substring(fileName.indexOf(".")).equals(".xlsx"))
+{
+wb = new XSSFWorkbook(fs);
+}
+else if(fileName.substring(fileName.indexOf(".")).equals(".xls"))
+{
+wb = new HSSFWorkbook(fs);
+}
+Sheet sh = wb.getSheet(sheetName);
+int totalNoofRows = sh.getPhysicalNumberOfRows();
+int totalNoofCols = sh.getRow(0).getPhysicalNumberOfCells();
+System.out.println("Rows : "+totalNoofRows+"Columns : "+totalNoofCols);
+arrayExcelData = new String[totalNoofRows-1][totalNoofCols];
+for(int i=1;i <= totalNoofRows-1; i++)
+{
+for(int j=0;j <= totalNoofCols-1;j++)
+{
+arrayExcelData[i-
+1][j]=sh.getRow(i).getCell(j).getStringCellValue().toString();
+}
+}
+}
+catch (Exception e) {
+System.out.println("error in getTableArray()");
+}
+return arrayExcelData;
+}
+}
+package scripts;
+import org.testng.annotations.Test;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class question6qaagility {
+WebDriver driver;
+ @Test
+ public void f() throws InterruptedException {
+ driver.get("http://www.qaagility.com/");
+ for(int i = 1; i<=5; i++)
+ {
+
+System.out.println(driver.findElement(By.xpath("html/body/div[1]/div/div/header/na
+v/ul/li["+i+"]/a")).getText());
+ }
+
+
+driver.findElement(By.xpath("html/body/div[1]/div/div/header/nav/ul/li[5]/a")).cli
+ck();
+ Thread.sleep(3000);
+
+ String title =
+driver.findElement(By.xpath("html/body/div[1]/div/div/section/article/div[3]/div[1
+]")).getText();
+
+ Assert.assertEquals("GET IN TOUCH WITH US.", title);
+
+
+driver.findElement(By.xpath("html/body/div[1]/div/div/div/div[2]/ul/li[2]/a")).cli
+ck();
+ driver.findElement(By.id("mobile")).sendKeys("ABCDE");
+
+Assert.assertTrue(driver.findElement(By.id("mobile")).getText().isEmpty());
+ driver.findElement(By.id("email")).sendKeys("test");
+ JavascriptExecutor jse = (JavascriptExecutor)driver;
+jse.executeScript("window.scrollBy(0,1050)", "");
+
+ driver.findElement(By.id("submit")).click();
+ Assert.assertEquals("Invalid email address.",
+driver.findElement(By.xpath("html/body/div[1]/div/div/section/article/div[3]/form/
+div[2]/span")).getText());
+
+/* JavascriptExecutor jse = (JavascriptExecutor)driver;
+jse.executeScript("window.scrollBy(0,1050)", "");
+ List<WebElement> lista = driver.findElements(By.className("address"));
+ for(int i = 0; i<lista.size();i++)
+ System.out.println(lista.get(i).toString());*/
+
+ }
+ @BeforeTest
+ public void beforeTest() {
+ System.setProperty("webdriver.chrome.driver",
+"test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+ }
+ @AfterTest
+ public void afterTest() {
+// driver.quit();
+ }
+}
+package scripts;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Properties;
+import org.testng.annotations.Test;
+public class readProperties {
+@Test
+public void test() throws IOException
+{
+File file = new File("data/data.properties");
+FileInputStream fis = new FileInputStream(file);
+//object of properties
+Properties prop = new Properties();
+//to load property file
+prop.load(fis);
+System.out.println(prop.getProperty("URL"));
+//to print all the key value pairs
+Enumeration<Object> keyvalues = prop.keys();
+while(keyvalues.hasMoreElements())
+{
+String key = (String) keyvalues.nextElement();
+String value = prop.getProperty(key);
+System.out.println(key + ": "+value);
+}
+}
+}
+package scripts;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+public class Test1 {
+public static void main(String[] args) {
+System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+WebDriver driver = new ChromeDriver();
+driver.get("https://www.wikipedia.org");
+driver.findElement(By.xpath(".//*[@id='js-link-box-en']/strong")).click();
+driver.findElement(By.id("searchInput")).sendKeys("Selenium Software");
+driver.findElement(By.id("searchButton")).click();
+WebDriverWait wait = new WebDriverWait(driver, 15);
+driver.findElement(By.xpath(".//*[@id='mw-contenttext']/div/ul/li[1]/div[1]/a/span[1]")).click();
+wait.until(ExpectedConditions.textToBePresentInElementLocated(By.xpath("//*[@id=\"first
+Heading\"]"), "Selenium (software)"));
+String a = driver.getTitle();
+System.out.println(a);
+}
+}
+package scripts;
+import org.testng.annotations.Test;
+public class testskippigNG {
+ @Test(priority=0, groups={"Performance"})
+ public void f() {
+ System.out.println("1");
+ }
+
+ @Test(priority=3, groups={"Usability"})
+ public void nkn() {
+ System.out.println("2");
+ }
+
+ @Test(priority=2, groups={"Usability"})
+ public void qq() {
+ System.out.println("3");
+ }
+
+ @Test
+ public void z() {
+ System.out.println("4");
+ }
+}
+package scripts;
+import java.util.concurrent.TimeUnit;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.AssertJUnit;
+public class untitledJU {
+//private WebDriver driver;
+//System.setProperty("webdriver.chrome.driver","C:\\Users\\ae203_pc12\\workspace\\CPS
+AT\\test\\resources\\drivers\\chromedriver.exe");
+private WebDriver driver ;
+@Before
+public void setUp() throws Exception {
+System.setProperty("webdriver.chrome.driver","test//resources//drivers//chromedriver.exe
+");
+driver = new ChromeDriver();
+driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+}
+@After
+public void tearDown() throws Exception {
+driver.quit();
+}
+@Test
+public void test() {
+driver.get("https://www.wikipedia.org");
+driver.findElement(By.xpath(".//*[@id='js-link-box-en']/strong")).click();
+driver.findElement(By.id("searchInput")).sendKeys("Selenium Software");
+driver.findElement(By.id("searchButton")).click();
+driver.findElement(By.xpath(".//*[@id='mw-contenttext']/div/ul/li[1]/div[1]/a/span[1]")).click();
+AssertJUnit.assertEquals("Selenium (software) - Wikipedia", driver.getTitle());
+}
+}
+package scripts;
+import org.testng.annotations.AfterMethod;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeMethod;
+import org.testng.Assert;
+import java.util.concurrent.TimeUnit;
+import org.testng.annotations.*;
+import org.openqa.selenium.*;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+public class VodaNG {
+ private WebDriver driver;
+ private String baseUrl;
+ private StringBuffer verificationErrors = new StringBuffer();
+ @BeforeMethod
+@BeforeClass(alwaysRun = true)
+ public void setUp() throws Exception {
+ System.setProperty("webdriver.gecko.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\geckodriver.exe");
+ driver = new FirefoxDriver();
+ baseUrl = "https://www.vodafone.in/";
+ driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+ }
+ @Test
+ public void testUntitled() throws Exception {
+ driver.get(baseUrl + "/home-mumbai");
+ driver.findElement(By.cssSelector("a.closeBtn.mv_closeBtn")).click();
+ driver.findElement(By.linkText("Store Locator")).click();
+ new Select(driver.findElement(By.id("ctl00_CU_ddlCircle"))).selectByVisibleText("Delhi & NCR");
+ new Select(driver.findElement(By.id("ctl00_CU_ddlCircle"))).selectByValue("bnj");
+ new Select(driver.findElement(By.id("ctl00_CU_ddlCircle"))).selectByIndex(1);
+ driver.findElement(By.cssSelector("option[value=\"delhi\"]")).click();
+ }
+ @AfterMethod
+@AfterClass(alwaysRun = true)
+ public void tearDown() throws Exception {
+ driver.quit();
+ String verificationErrorString = verificationErrors.toString();
+ if (!"".equals(verificationErrorString)) {
+ Assert.fail(verificationErrorString);
+ }
+ }
+
+}
+package scripts;
+import org.testng.annotations.Test;
+import org.testng.AssertJUnit;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class w3schoolNG {
+private WebDriver driver;
+ @Test
+ public void f() {
+ driver.get("https://www.w3schools.com/html/tryit.asp?filename=tryhtml_radio");
+ driver.switchTo().frame(driver.findElement(By.id("iframeResult")));
+ driver.findElement(By.xpath("/html/body/form/input[1]")).click();
+ String str =
+driver.findElement(By.xpath("/html/body/form/input[1]")).getAttribute("checked");
+
+ AssertJUnit.assertEquals("true", str);
+ driver.findElement(By.xpath("/html/body/form/input[2]")).click();
+ String str2 =
+driver.findElement(By.xpath("/html/body/form/input[2]")).getAttribute("checked");
+ AssertJUnit.assertEquals("true", str2);
+
+ }
+ @BeforeTest
+ public void beforeTest() {
+ System.setProperty("webdriver.chrome.driver",
+"C:\\Users\\ae203_pc12\\workspace\\CPSAT\\test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+ }
+ @AfterTest
+ public void afterTest() {
+ driver.quit();
+ }
+}
+package scripts;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+import org.junit.runners.Suite.SuiteClasses;
+@RunWith(Suite.class)
+@SuiteClasses({ question2allmovie.class, question3wiki.class })
+public class AllTests {
+}
+package scripts;
+import java.util.List;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.AssertJUnit;
+public class question2allmovie {
+WebDriver driver;
+@Before
+public void setUp() throws Exception {
+System.setProperty("webdriver.chrome.driver",
+"test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+@After
+public void tearDown() throws Exception {
+driver.quit();
+}
+@Test
+public void test() throws InterruptedException {
+driver.get("http://www.allmovie.com");
+driver.findElement(By.xpath("html/body/div[2]/div[1]/div/div/div[2]/form/input[2]")).sendK
+eys("Inception");
+driver.findElement(By.xpath("html/body/div[2]/div[1]/div/div/div[2]/form/input[1]")).click();
+driver.findElement(By.xpath("html/body/div[2]/div[2]/div[1]/div[2]/div/ul/li/div[2]/div[1]/a"
+)).click();
+Thread.sleep(5000);
+//rating
+String a =
+driver.findElement(By.xpath("html/body/div[2]/div[2]/div[1]/div[2]/header/hgroup[2]/span[4]/span
+")).getText();
+String[] b = a.split(" ");
+int time = Integer.parseInt(b[0]);
+System.out.println(time);
+AssertJUnit.assertTrue(time<150);
+/*for(int i=1; i <= 2; i++ )
+{
+scifi =
+driver.findElement(By.xpath("html/body/div[2]/div[2]/div[1]/div[2]/header/hgroup[2]/span[2]/a["+i
++"]")).getText();
+}*/
+List<WebElement> lista = driver.findElements(By.className("header-moviesubgenres"));
+for(int i = 0; i<lista.size();i++)
+{
+if(lista.get(i).toString().equalsIgnoreCase("Sci-Fi Action"))
+{
+AssertJUnit.assertTrue(lista.get(i).toString().equalsIgnoreCase("Sci-Fi
+Action"));
+}
+}
+//director name
+System.out.println(driver.findElement(By.xpath("html/body/div[2]/div[2]/div[1]/div[2]/head
+er/hgroup[1]/h3/span/a")).getText());
+String urat =
+driver.findElement(By.xpath("html/body/div[2]/div[2]/div[1]/div[2]/header/hgroup[1]/h3/span/a")).
+getAttribute("value");
+System.out.println(urat);
+}
+}
+package scripts;
+import java.io.File;
+import java.io.IOException;
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.OutputType;
+import org.openqa.selenium.TakesScreenshot;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+public class question3wiki {
+WebDriver driver;
+@Before
+public void setUp() throws Exception {
+System.setProperty("webdriver.chrome.driver",
+"test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+@After
+public void tearDown() throws Exception {
+driver.quit();
+}
+@Test
+public void test() throws InterruptedException, IOException {
+driver.get("http://www.wikipedia.org");
+driver.findElement(By.xpath("html/body/div[1]/div[2]/a/strong")).click();
+driver.findElement(By.id("searchInput")).sendKeys("Harvard University");
+driver.findElement(By.id("searchButton")).click();
+//motto
+System.out.println(driver.findElement(By.xpath("html/body/div[3]/div[3]/div[4]/div/table[1]
+/tbody/tr[2]/td/span/i")).getText());
+JavascriptExecutor jse = (JavascriptExecutor)driver;
+jse.executeScript("window.scrollBy(0,1250)", "");
+Thread.sleep(2000);
+driver.findElement(By.xpath("html/body/div[3]/div[3]/div[4]/div/div[2]/ul/li[6]/a/span[2]")).
+click();
+Thread.sleep(2000);
+for(int i = 1; i <= 16; i++)
+{
+System.out.println(driver.findElement(By.xpath("html/body/div[3]/div[3]/div[4]/div/ul[1]/li[
+"+i+"]/div/div[2]/p/a")).getText());
+}
+File src= ((TakesScreenshot)driver).getScreenshotAs(OutputType.FILE);
+FileUtils.copyFile(src, new File("C:/selenium/HarvardScreenshot.png"));
+Thread.sleep(5000);
+}
+}
+package scripts;
+import org.junit.Assert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class question6qaagility {
+WebDriver driver;
+ @Test
+ public void f() throws InterruptedException {
+ driver.get("http://www.qaagility.com/");
+ for(int i = 1; i<=5; i++)
+ {
+
+System.out.println(driver.findElement(By.xpath("html/body/div[1]/div/div/header/nav/ul/li["+i+"]/a
+")).getText());
+ }
+
+ driver.findElement(By.xpath("html/body/div[1]/div/div/header/nav/ul/li[5]/a")).click();
+ Thread.sleep(3000);
+
+ String title =
+driver.findElement(By.xpath("html/body/div[1]/div/div/section/article/div[3]/div[1]")).getText();
+
+ Assert.assertEquals("GET IN TOUCH WITH US.", title);
+
+ driver.findElement(By.xpath("html/body/div[1]/div/div/div/div[2]/ul/li[2]/a")).click();
+ driver.findElement(By.id("mobile")).sendKeys("ABCDE");
+ Assert.assertTrue(driver.findElement(By.id("mobile")).getText().isEmpty());
+ driver.findElement(By.id("email")).sendKeys("test");
+ driver.findElement(By.id("submit")).click();
+ Assert.assertEquals("Invalid email address.",
+driver.findElement(By.xpath("html/body/div[1]/div/div/section/article/div[3]/form/div[2]/span")).ge
+tText());
+
+/* JavascriptExecutor jse = (JavascriptExecutor)driver;
+jse.executeScript("window.scrollBy(0,1050)", "");
+ List<WebElement> lista = driver.findElements(By.className("address"));
+ for(int i = 0; i<lista.size();i++)
+ System.out.println(lista.get(i).toString());*/
+
+ }
+ @BeforeTest
+ public void beforeTest() {
+ System.setProperty("webdriver.chrome.driver",
+"test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+ }
+ @AfterTest
+ public void afterTest() {
+// driver.quit();
+ }
+}
+package scripts;
+import java.io.File;
+import java.io.FileInputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.openqa.selenium.By;
+import org.openqa.selenium.Keys;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class question1shoppersstop {
+public WebDriver driver;
+@DataProvider (name = "DP1")
+public Object[][] createData1() {
+Object[][] retObjArr=getExcelData("D:\\shoppersstop1.xlsx","Sheet1");
+return(retObjArr);
+}
+ @Test (dataProvider = "DP1")
+ public void f(String brands) throws InterruptedException {
+ driver.get("https://www.shoppersstop.com/");
+ driver.findElement(By.id("js-site-search-input")).sendKeys(brands);
+ driver.findElement(By.id("js-site-search-input")).sendKeys(Keys.ENTER);
+ List<String> lista = new ArrayList<String>();
+ driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+
+driver.findElement(By.xpath("html/body/main/section[2]/div/div/div[4]/div[1]/div[2]/ul/li[5]")).click
+();
+
+System.out.println(driver.findElement(By.xpath("html/body/main/section[2]/div/div/div[4]/div[2]/di
+v[2]/ul/li[1]/div/div[2]/a/div[2]/div/ul/li[2]")).getText());
+
+/* for(int i=0; i < 3 ; i++)
+ {
+if(driver.findElement(By.xpath("html/body/main/section[2]/div/div/div[4]/div[2]/div[2]/ul/li
+[4]/div/div[2]/a/div[2]/div/ul/li[3]/span")).getText() != null)
+{
+
+lista.add(driver.findElement(By.xpath("html/body/main/section[2]/div/div/div[4]/div[2]/div[2]/ul/li[
+"+(i+1)+"]/div/div[2]/a/div[2]/div/ul/li[2]")).getText());
+ Thread.sleep(1000);
+}
+else
+{
+lista.add(driver.findElement(By.xpath("html/body/main/section[2]/div/div/div[4]/div[2]/div[
+2]/ul/li[1]/div/div[2]/a/div[2]/div")).getText());
+Thread.sleep(1000);
+}
+ }
+
+ String b = "";
+ for(int i = 0; i<lista.size();i++)
+ {
+ b = lista.get(i).substring(1);
+ lista.set(i, b);
+ }
+
+ System.out.println(lista);
+
+
+ int a[] = new int[lista.size()];
+// int num;
+ for(int i = 0; i < lista.size(); i++)
+ {
+ a[i] = Integer.parseInt(lista.get(i));
+ }
+
+ for(int i=0; i< a.length; i++)
+ {
+ System.out.println(a[i]);
+ }*/
+
+ }
+
+ @BeforeTest
+ public void beforeTest() {
+ System.setProperty("webdriver.gecko.driver",
+"test\\resources\\drivers\\geckodriver.exe");
+ driver = new FirefoxDriver();
+ }
+ @AfterTest
+ public void afterTest() {
+ driver.quit();
+ }
+ public String[][] getExcelData(String fileName, String sheetName)
+{
+ String[][] arrayExcelData = null;
+ Workbook wb = null;
+ try{
+ File file = new File(fileName);
+ FileInputStream fs = new FileInputStream(file);
+
+ if(fileName.substring(fileName.indexOf(".")).equals(".xlsx"))
+ {
+ wb = new XSSFWorkbook(fs);
+
+ }
+ else if(fileName.substring(fileName.indexOf(".")).equals(".xls"))
+ {
+ wb = new HSSFWorkbook(fs);
+ }
+
+
+
+ Sheet sh = wb.getSheet(sheetName);
+ int totalNoofRows = sh.getPhysicalNumberOfRows();
+ int totalNoofCols = sh.getRow(0).getPhysicalNumberOfCells();
+
+ System.out.println("Rows : "+totalNoofRows+"Columns : "+totalNoofCols);
+ arrayExcelData = new String[totalNoofRows-1][totalNoofCols];
+ for(int i=1;i <= totalNoofRows-1; i++)
+ {
+ for(int j=0;j <= totalNoofCols-1;j++)
+ {
+ arrayExcelData[i-1][j]=sh.getRow(i).getCell(j).getStringCellValue().toString();
+ }
+ }
+
+
+ }
+ catch (Exception e) {
+ System.out.println("error in getTableArray()");
+
+ }
+ return arrayExcelData;
+ }
+}
+package scripts;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.annotations.Test;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterTest;
+public class question2imdb {
+private WebDriver driver;
+@Test
+public void f() throws InterruptedException
+{
+driver.get("http://www.imdb.com");
+driver.findElement(By.xpath("html/body/div[1]/div/div[1]/div[2]/form/div/input[2]")).sendK
+eys("Deadpool");
+driver.findElement(By.xpath("html/body/div[1]/div/div[1]/div[2]/form/div/button")).click();
+driver.findElement(By.linkText("Deadpool")).click();
+Thread.sleep(5000);
+//rating
+System.out.println(
+driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/div[2]/div/div[2]/div[2]/div/
+div[1]/div[1]/div[1]/strong/span")).getText());
+//runtime
+System.out.println(driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/d
+iv[2]/div/div[2]/div[2]/div/div[2]/div[2]/div/time")).getText());
+//director
+System.out.println(driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/d
+iv[2]/div/div[3]/div[1]/div[2]/span/a/span")).getText());
+for(int i = 0; i < 3; i++)
+System.out.println(driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/d
+iv[2]/div/div[3]/div[1]/div[4]/span["+(i+1)+"]/a/span")).getText());
+/*Assert.assertEquals("Tim Miller",
+driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/div[2]/div/div[3]/div[1]/div[
+2]/span/a/span")).getText());
+Assert.assertEquals("8.0",
+driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/div[2]/div/div[2]/div[2]/div/
+div[1]/div[1]/div[1]/strong/span")).getText());
+Assert.assertEquals("1h 48min",
+driver.findElement(By.xpath("html/body/div[1]/div/div[4]/div[5]/div[1]/div[2]/div/div[2]/div[2]/div/
+div[2]/div[2]/div/time")).getText());
+Assert.assertEquals("", expected);*/
+}
+//runtime director rating actor names
+@BeforeTest
+public void beforeTest() {
+System.setProperty("webdriver.chrome.driver",
+"test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+@AfterTest
+public void afterTest() {
+driver.quit();
+}
+}
+package scripts;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.testng.AssertJUnit;
+public class question3 {
+private WebDriver driver;
+@Before
+public void setUp() throws Exception {
+System.setProperty("webdriver.chrome.driver",
+"test\\resources\\drivers\\chromedriver.exe");
+driver = new ChromeDriver();
+}
+@After
+public void tearDown() throws Exception {
+}
+@Test
+public void test() throws InterruptedException {
+driver.get("http://web2.0calc.com/");
+driver.findElement(By.id("Btn2")).click();
+driver.findElement(By.id("BtnPowXY")).click();
+driver.findElement(By.id("Btn5")).click();
+driver.findElement(By.id("BtnCalc")).click();
+Thread.sleep(2000);
+String a = driver.findElement(By.id("input")).getAttribute("value");
+int num = Integer.parseInt(a);
+int calc =(int) java.lang.Math.pow(2, 5);
+//System.out.println(num);
+AssertJUnit.assertEquals(calc, num);
+}
+}
+C:\Program Files\Java\jre1.8.0_92\lib\resources.jar
+C:\Program Files\Java\jre1.8.0_92\lib\rt.jar
+C:\Program Files\Java\jre1.8.0_92\lib\jsse.jar
+C:\Program Files\Java\jre1.8.0_92\lib\jce.jar
+C:\Program Files\Java\jre1.8.0_92\lib\charsets.jar
+C:\Program Files\Java\jre1.8.0_92\lib\jfr.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\access-bridge-64.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\cldrdata.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\dnsns.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\jaccess.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\jfxrt.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\localedata.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\nashorn.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\sunec.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\sunjce_provider.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\sunmscapi.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\sunpkcs11.jar
+C:\Program Files\Java\jre1.8.0_92\lib\ext\zipfs.jar
+</h3>
+</body>
+</html>
